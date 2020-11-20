@@ -1,0 +1,10 @@
+[
+  {
+    "args": {
+      "base_file": "${packages}/RuboCop Completion/RuboCop Completion.sublime-settings",
+      "default": "// RuboCop Completion - User\n{\n\t$0\n}\n"
+    },
+    "caption": "RuboCop Completion: Settings",
+    "command": "edit_settings"
+  }
+]

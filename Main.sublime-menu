@@ -1,0 +1,32 @@
+[
+  {
+    "caption": "Preferences",
+    "children": [
+      {
+        "caption": "Package Settings",
+        "children": [
+          {
+            "caption": "RuboCop Completion",
+            "children": [
+              {
+                "args": {
+                  "base_file": "${packages}/RuboCop Completion/RuboCop Completion.sublime-settings",
+                  "default": "// RuboCop Completion - User\n{\n\t$0\n}\n"
+                },
+                "caption": "Settings",
+                "command": "edit_settings"
+              },
+              {
+                "caption": "-"
+              }
+            ]
+          }
+        ],
+        "id": "package-settings",
+        "mnemonic": "P"
+      }
+    ],
+    "id": "preferences",
+    "mnemonic": "n"
+  }
+]
