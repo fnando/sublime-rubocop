@@ -20,7 +20,7 @@ takes you.
 
 ## License
 
-Copyright (c) 2019 Nando Vieira
+Copyright (c) 2020 Nando Vieira
 
 MIT License
 
