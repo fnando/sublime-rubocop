@@ -1,7 +1,6 @@
 # RuboCop Completion for Sublime Text
 
-Autocomplete Ruby and [Rubocop](https://www.rubocop.org/) config files. Requires
-latest dev release (Build 4075 or newer).
+Autocomplete Ruby and [Rubocop](https://www.rubocop.org/) config files.
 
 ![RuboCop Completion in action](https://github.com/fnando/sublime-rubocop-completion/raw/main/sublime-rubocop-completion.gif)
 

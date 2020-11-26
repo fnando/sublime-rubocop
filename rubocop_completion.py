@@ -9,6 +9,9 @@ import yaml
 import json
 from pathlib import Path
 
+def is_sublime_3():
+  return sublime.version()[0] == "3"
+
 settings = {}
 
 def plugin_loaded():
@@ -56,16 +59,18 @@ class RubocopCompletionListener(sublime_plugin.EventListener):
     completions = []
     completions += self.completions_for_ruby(cops, view, locations, folders, root_dir, row_number, col_number, line)
     completions += self.completions_for_yaml(cops, view, locations, folders, root_dir, row_number, col_number, line)
-    
-    completions = sorted(completions, key=lambda item: item.trigger)
 
-    return sublime.CompletionList(completions, sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)
 
-    # completions = [c for c in completions if c[1].lower().startswith(prefix)]
-    # return (
-    #   completions,
-    #   sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS
-    # )
+    if is_sublime_3():
+      completions = sorted(completions, key=lambda item: item[0])
+      return (
+        completions,
+        sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS
+      )
+    else:
+      completions = sorted(completions, key=lambda item: item.trigger)
+      return sublime.CompletionList(completions, sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)
+
 
   def find_previous_line_matching_regex(self, view, current_row_number, pattern):
     while current_row_number > 0:
@@ -93,15 +98,7 @@ class RubocopCompletionListener(sublime_plugin.EventListener):
       for name in cops:
         cop = cops[name]
 
-        completions.append(
-          sublime.CompletionItem(name,
-                  completion = "%s:\n  " % name,
-                  details = "%s%s" % (cop["Description"], self.docs_link(name)),
-                  annotation = "Cop",
-                  kind = sublime.KIND_KEYWORD
-                )
-          # ["%s\tenabled=%s" % (name, cops[name]["Enabled"]), "%s:\n  " % name]
-        )
+        completions.append(self.build_cop_completion_st3(cop, name) if is_sublime_3() else self.build_cop_completion(cop, name))
 
     if col_number == 2 and line == "  ":
       matches = self.find_previous_line_matching_regex(view, row_number, r"""^([a-zA-Z0-9/]+):$""")
@@ -123,20 +120,41 @@ class RubocopCompletionListener(sublime_plugin.EventListener):
         else:
           value = cop[attr]
 
-        snippet_value = str(value)
+        snippet_str = str(value)
         value_str = str(cop[attr])
 
-        completions.append(
-          sublime.CompletionItem.snippet_completion(attr,
-                  snippet = "%s: ${1:%s}" % (attr, snippet_value),
-                  annotation = "Property",
-                  kind = sublime.KIND_VARIABLE,
-                  details = "Default: %s%s" % (value_str, self.docs_link(cop_name))
-                )
-          # ["%s" % key, "%s: " % key]
-        )
+        if is_sublime_3():
+          completion = self.build_attribute_completion_st3(cop_name, attr, value_str, snippet_str)
+        else:
+          completion = self.build_attribute_completion(cop_name, attr, value_str, snippet_str)
+
+        completions.append(completion)
 
     return completions
+
+  def build_cop_completion(self, cop, cop_name):
+    return sublime.CompletionItem(
+      cop_name,
+      completion = "%s:\n  " % cop_name,
+      details = "%s%s" % (cop["Description"], self.docs_link(cop_name)),
+      annotation = "Cop",
+      kind = sublime.KIND_KEYWORD
+    )
+
+  def build_cop_completion_st3(self, cop, cop_name):
+    return ["%s" % cop_name]
+
+  def build_attribute_completion_st3(self, cop_name, attr, value, snippet):
+    return ["%s" % attr, "%s: ${1:%s}" % (attr, snippet)]
+
+  def build_attribute_completion(self, cop_name, attr, value, snippet):
+    return sublime.CompletionItem.snippet_completion(
+      attr,
+      snippet = "%s: ${1:%s}" % (attr, snippet),
+      annotation = "Property",
+      kind = sublime.KIND_VARIABLE,
+      details = "Default: %s%s" % (value, self.docs_link(cop_name))
+    )
 
   def completions_for_ruby(self, cops, view, locations, folders, root_dir, row_number, col_number, line):
     # Make sure we're in Ruby context.
@@ -182,8 +200,6 @@ class RubocopCompletionListener(sublime_plugin.EventListener):
         annotation = "Cop",
         kind = sublime.KIND_KEYWORD
       ))
-
-      # ["%s\tenabled=%s" % (name, cops[name]["Enabled"]), name]
 
     return completions
 
