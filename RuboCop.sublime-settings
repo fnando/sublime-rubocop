@@ -1,0 +1,27 @@
+{
+  // Enable debug mode.
+  "debug": false,
+
+  // Enable cache.
+  // Files are cached at Packages/User/RuboCop/Cache
+  "cache": true,
+
+  // Automatically manage RuboCop servers.
+  // https://docs.rubocop.org/rubocop/usage/server.html
+  "server": true,
+
+  // Enable Bundler detection.
+  // When this option is enabled, sublime-rubocop will prefix the command with
+  // the contents of the `bundler_command` setting.
+  "bundler": true,
+
+  // The base rubocop command that will be executed.
+  // If you're using a version manager like [asdf](https://asdf-vm.com),
+  // use the full path like `/Users/fnando/.asdf/shims/rubocop`.
+  "rubocop_command": "rubocop",
+
+  // The base bundler command that will be executed.
+  // If you're using a version manager like [asdf](https://asdf-vm.com),
+  // use the full path like `/Users/fnando/.asdf/shims/bundle`.
+  "bundler_command": "bundle"
+}

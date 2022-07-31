@@ -1,10 +1,38 @@
 [
   {
     "args": {
-      "base_file": "${packages}/RuboCop Completion/RuboCop Completion.sublime-settings",
-      "default": "// RuboCop Completion - User\n{\n\t$0\n}\n"
+      "base_file": "${packages}/RuboCop/RuboCop.sublime-settings",
+      "default": "// RuboCop - User\n{\n\t$0\n}\n"
     },
-    "caption": "RuboCop Completion: Settings",
+    "caption": "RuboCop: Settings",
     "command": "edit_settings"
+  },
+
+  {
+    "caption": "RuboCop: Restart Server",
+    "command": "rubocop_start_server",
+    "args": {
+      "restart": true
+    }
+  },
+
+  {
+    "caption": "RuboCop: Start Server",
+    "command": "rubocop_start_server"
+  },
+
+  {
+    "caption": "RuboCop: Stop Server",
+    "command": "rubocop_stop_server"
+  },
+
+  {
+    "caption": "RuboCop: Stop All Servers",
+    "command": "rubocop_stop_all_servers"
+  },
+
+  {
+    "caption": "RuboCop: Clear Cache",
+    "command": "rubocop_clear_cache"
   }
 ]

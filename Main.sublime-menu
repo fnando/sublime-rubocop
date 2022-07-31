@@ -6,12 +6,12 @@
         "caption": "Package Settings",
         "children": [
           {
-            "caption": "RuboCop Completion",
+            "caption": "RuboCop",
             "children": [
               {
                 "args": {
-                  "base_file": "${packages}/RuboCop Completion/RuboCop Completion.sublime-settings",
-                  "default": "// RuboCop Completion - User\n{\n\t$0\n}\n"
+                  "base_file": "${packages}/RuboCop/RuboCop.sublime-settings",
+                  "default": "// RuboCop - User\n{\n\t$0\n}\n"
                 },
                 "caption": "Settings",
                 "command": "edit_settings"

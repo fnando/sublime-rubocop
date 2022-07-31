@@ -1,6 +1,7 @@
-# RuboCop Completion for Sublime Text
+# RuboCop for Sublime Text
 
-Autocomplete Ruby and [Rubocop](https://www.rubocop.org/) config files.
+Autocomplete Ruby and [Rubocop](https://www.rubocop.org/) config files. Also
+manage RuboCop servers.
 
 ![RuboCop Completion in action](https://github.com/fnando/sublime-rubocop-completion/raw/main/sublime-rubocop-completion.gif)
 
@@ -10,7 +11,7 @@ Autocomplete Ruby and [Rubocop](https://www.rubocop.org/) config files.
 
 1. Follow the instructions from https://sublime.fnando.com.
 2. Open the command pallete, run “Package Control: Install Package“, then search
-   for “RuboCop Completion“.
+   for “RuboCop“.
 
 ### Git Clone
 
