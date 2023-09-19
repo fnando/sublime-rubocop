@@ -44,11 +44,11 @@ def run_rubocop(args, folder=None):
 
     if folder is None:
         debug("no folder provided, so skipping")
-        return False
+        return (False, "")
 
     if not rubocop_config_file.is_file():
         debug("no rubocop config file found, so no need to stop server")
-        return False
+        return (False, "")
 
     cmd = []
 
