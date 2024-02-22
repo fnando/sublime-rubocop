@@ -12,6 +12,9 @@ from .utils import settings, SafeLoaderIgnoreUnknown, debug, run_rubocop, is_sub
 
 
 def find_root_dir_for_file(folders, file_name):
+    if file_name is None:
+        return
+
     if len(folders) == 0:
         return os.path.dirname(file_name)
 
@@ -21,6 +24,7 @@ def find_root_dir_for_file(folders, file_name):
 
 
 class RubocopCompletionListener(sublime_plugin.EventListener):
+
     def on_query_completions(self, view, prefix, locations):
         window = view.window()
         folders = window.folders()
@@ -37,22 +41,26 @@ class RubocopCompletionListener(sublime_plugin.EventListener):
         debug("rubocop command:", settings("rubocop_command"))
         debug("bundler command:", settings("bundler_command"))
 
-        sel = view.sel()[0]
-        line = view.substr(view.full_line(sel))
-        cursor = sel.begin()
-        (row_number, col_number) = view.rowcol(cursor)
-
-        cache = self.get_cache(root_dir)
-
-        cops = cache["cops"]
-
         completions = []
-        completions += self.completions_for_ruby(cops, view, locations,
-                                                 folders, root_dir, row_number,
-                                                 col_number, line)
-        completions += self.completions_for_yaml(cops, view, locations,
-                                                 folders, root_dir, row_number,
-                                                 col_number, line)
+
+        if root_dir != None:
+            sel = view.sel()[0]
+            line = view.substr(view.full_line(sel))
+            cursor = sel.begin()
+            (row_number, col_number) = view.rowcol(cursor)
+
+            cache = self.get_cache(root_dir)
+
+            cops = cache["cops"]
+
+            completions += self.completions_for_ruby(cops, view, locations,
+                                                     folders, root_dir,
+                                                     row_number, col_number,
+                                                     line)
+            completions += self.completions_for_yaml(cops, view, locations,
+                                                     folders, root_dir,
+                                                     row_number, col_number,
+                                                     line)
 
         if is_sublime_3():
             completions = sorted(completions, key=lambda item: item[0])
@@ -218,8 +226,8 @@ class RubocopCompletionListener(sublime_plugin.EventListener):
             cop_name = matches.group(1)
 
             cop = cops.get(cop_name)
-            debug("try completion for", cop_name, "properties. Found?",
-                  cop != None)
+            debug("try completion for", cop_name, "properties. Found?", cop
+                  != None)
 
             if cop is None:
                 return completions
