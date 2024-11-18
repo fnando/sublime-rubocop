@@ -53,9 +53,9 @@ def run_rubocop(args, folder=None):
     cmd = []
 
     if settings("bundler") and bundler_config_file.is_file():
-        cmd += [settings("bundler_command"), "exec", "rubocop"]
+        cmd += [os.path.expanduser(settings("bundler_command")), "exec", "rubocop"]
     else:
-        cmd += [settings("rubocop_command")]
+        cmd += [os.path.expanduser(settings("rubocop_command"))]
 
     cmd += args
 
